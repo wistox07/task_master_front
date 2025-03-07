@@ -1,14 +1,13 @@
 import { useForm } from 'react-hook-form'
 import { FormGroup, Label, Form } from 'reactstrap'
 import { ErrorMessage } from '@hookform/error-message'
+import { useLoginStore } from '../../Store/LoginStore'
+import { RequestLogin } from '../../Types/LoginTypes';
 
 
 export default function Login() {
 
-interface RequestLogin {
-    "user" : string,
-    "password" : string
-}
+
 const { 
     register, 
     handleSubmit, 
@@ -16,29 +15,35 @@ const {
 } = useForm<RequestLogin>();
 
 
-    const onSubmit = async (values: RequestLogin) => {
-        console.log(values)
+const {
+  postLogin : callPostLogin
+} = useLoginStore()
+
+
+    const onSubmit = async (values : RequestLogin) => {
+        const data = await callPostLogin(values)
+        console.log(data)
     }
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
               <Label htmlFor='email' className='form-label'>
-                Usuario
+                email
               </Label>
               <input
                 type='text'
                 placeholder='email'
                 autoComplete='off'
                 className='form-control'
-                {...register('user', {
+                {...register('email', {
                   required: { value: true, message: 'Campo obligatorio' }
                 })}
               />
 
               <ErrorMessage
                 errors={errors}
-                name='user'
+                name='email'
                 render={({ message }) => <div className='text-danger'>{message}</div>}
               />
             </FormGroup>
