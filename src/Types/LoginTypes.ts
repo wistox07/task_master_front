@@ -1,4 +1,4 @@
-export interface RequestLogin {
+export interface LoginRequest {
     email: string;
     password: string;
 }
@@ -15,17 +15,17 @@ export interface LoginSuccessResponse {
 }
 
 export interface LoginErrorResponse {
-    error : false;
+    error : true;
     message : string;
     message_detail: string | string[];
 }
 
 export type LoginResponse = LoginSuccessResponse | LoginErrorResponse;
 
-
+/*
 export interface LoginStore {
     postLogin: (data: RequestLogin) => Promise<LoginResponse>;
 }
-
+*/
 
 
