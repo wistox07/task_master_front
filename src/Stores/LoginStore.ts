@@ -1,17 +1,20 @@
 import {createWithEqualityFn} from 'zustand/traditional'
-import axios from 'axios'
-import { postLoginUrl } from '../Api/ApiUrl'
-import { LoginStore , RequestLogin } from '../Types/LoginTypes'
+import {LoginResponse } from '../Types/LoginTypes'
+import { loginService } from '../Services/LoginService'
 
 
 
 
 export const useLoginStore = createWithEqualityFn<LoginStore>((set,get) => ({
+  /*
+    isData : {} : ,
+    setData : (value) => set(() => ({ isData: value })),
+
+
     postLogin: async (data : RequestLogin) => {
-        try {
-          return await axios.post(postLoginUrl, data)
-        } catch (error) {
-          console.log(error)
-        }
-      }
+
+      const response = await loginService.login(data);
+      get().setData(response) // Llamamos al servicio
+    }
+    */
 }))

@@ -24,8 +24,9 @@ export type LoginResponse = LoginSuccessResponse | LoginErrorResponse;
 
 /*
 export interface LoginStore {
-    postLogin: (data: RequestLogin) => Promise<LoginResponse>;
+    postLogin: (data: LoginRequest) => Promise<LoginResponse>;
 }
 */
+
 
 
