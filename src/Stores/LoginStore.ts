@@ -1,20 +1,19 @@
-import {createWithEqualityFn} from 'zustand/traditional'
-import {LoginResponse } from '../Types/LoginTypes'
-import { loginService } from '../Services/LoginService'
+//import {createWithEqualityFn} from 'zustand/traditional'
+import {create} from 'zustand'
+import { persist } from 'zustand/middleware'
+import {LoginStore } from '../Types/LoginTypes'
 
-
-
-
-export const useLoginStore = createWithEqualityFn<LoginStore>((set,get) => ({
-  /*
-    isData : {} : ,
-    setData : (value) => set(() => ({ isData: value })),
-
-
-    postLogin: async (data : RequestLogin) => {
-
-      const response = await loginService.login(data);
-      get().setData(response) // Llamamos al servicio
-    }
-    */
-}))
+export const useLoginStore = create<LoginStore>()(
+  persist(
+      (set) => ({
+        isUser :  null,
+        setUser : (value) => set(() => ({ isUser: value })),
+        isToken : null ,
+        setToken : (value) => set(() => ({ isToken: value })),
+      }),
+      {
+        name: "auth", // Nombre en localStorage
+        getStorage: () => localStorage, // Usa localStorage en lugar de sessionStorage
+      }
+  )
+)

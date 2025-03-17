@@ -14,6 +14,11 @@ export interface LoginSuccessResponse {
     token : string ;
 }
 
+export interface User  {
+    name : string,
+    email : string ,
+}
+
 export interface LoginErrorResponse {
     error : true;
     message : string;
@@ -22,11 +27,16 @@ export interface LoginErrorResponse {
 
 export type LoginResponse = LoginSuccessResponse | LoginErrorResponse;
 
-/*
-export interface LoginStore {
-    postLogin: (data: LoginRequest) => Promise<LoginResponse>;
+
+export type LoginStore = {
+    isUser: User | null; // Especificamos que puede ser un objeto de respuesta o null
+    setUser: (value: User) => void;
+    isToken : string | null;
+    setToken :  (value: string | null) => void;
+
+    //postLogin: (data: LoginRequest) => Promise<void>;
 }
-*/
+
 
 
 
