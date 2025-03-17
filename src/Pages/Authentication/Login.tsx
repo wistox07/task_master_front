@@ -39,6 +39,7 @@ export default function Login() {
 
   const onSubmit = async (values: LoginRequest) => {
     let response =await callLogin(values)
+    console.log(response);
     if(response.error){
       console.log(response.message, response.message_detail)
       return 
