@@ -5,6 +5,7 @@ import { useLoginStore } from '../../Stores/LoginStore'
 import { LoginRequest } from '../../Types/LoginTypes';
 import { useEffect } from 'react';
 import { loginService } from '../../Services/LoginService'
+import { useNavigate } from "react-router-dom";
 
 
 export default function Login() {
@@ -24,18 +25,18 @@ export default function Login() {
     setToken
   } = useLoginStore()
 
-
+  const navigate = useNavigate();
   const {
     login : callLogin
   } = loginService
 
-  /*
+  
   useEffect(() => {
-    if (isData){
-      console.log("isData:", isData);
+    if (isToken){
+      //redireccionar a otra vista
     }
-  }, [isData]); // Se ejecutará cada vez que `isData` cambie
-  */
+  }, [isToken]); // Se ejecutará cada vez que `isData` cambie
+  
 
   const onSubmit = async (values: LoginRequest) => {
     let response =await callLogin(values)
@@ -46,16 +47,9 @@ export default function Login() {
     }
     setToken(response.token)
     setUser(response.user)
-
-
-
-
-
-    //console.log(isData)
-
-    //console.log(isData)
-    //console.log(useLoginStore.getState().isData);    
+    navigate("/task");   
   }
+
 
   return (
     <>
@@ -111,17 +105,7 @@ export default function Login() {
         </button>
       </div>
     </Form>
-
-    {isToken && (
-      <div className="alert alert-success mt-3">
-        <h5>Datos de respuesta:</h5>
-        {isToken}
-      </div>
-    )}
-
     </>
-
-    
   )
 
 

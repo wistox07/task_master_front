@@ -1,9 +1,9 @@
 //import {createWithEqualityFn} from 'zustand/traditional'
 import {create} from 'zustand'
-import { persist } from 'zustand/middleware'
-import {LoginStore } from '../Types/LoginTypes'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import {LoginStoreTypes } from '../Types/LoginTypes'
 
-export const useLoginStore = create<LoginStore>()(
+export const useLoginStore = create<LoginStoreTypes>()(
   persist(
       (set) => ({
         isUser :  null,
@@ -13,7 +13,7 @@ export const useLoginStore = create<LoginStore>()(
       }),
       {
         name: "auth", // Nombre en localStorage
-        getStorage: () => localStorage, // Usa localStorage en lugar de sessionStorage
+        storage: createJSONStorage(() => localStorage), // Usa localStorage en lugar de sessionStorage
       }
   )
 )

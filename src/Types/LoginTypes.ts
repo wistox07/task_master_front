@@ -28,9 +28,9 @@ export interface LoginErrorResponse {
 export type LoginResponse = LoginSuccessResponse | LoginErrorResponse;
 
 
-export type LoginStore = {
+export type LoginStoreTypes = {
     isUser: User | null; // Especificamos que puede ser un objeto de respuesta o null
-    setUser: (value: User) => void;
+    setUser: (value: User | null) => void;
     isToken : string | null;
     setToken :  (value: string | null) => void;
 
