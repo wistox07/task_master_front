@@ -29,7 +29,6 @@ function App() {
 
 const NavigateToTaskIfLoggedIn = () => {
   const { isToken } = useLoginStore();
-  console.log(isToken)
   return isToken ? <Navigate to="/task" /> : <Navigate to="/login" />;
 };
 
