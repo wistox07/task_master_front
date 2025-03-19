@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useLoginStore } from "../../Stores/LoginStore"
+
 
 
 
@@ -9,6 +11,17 @@ export default function Task () {
         setToken(null)
         setUser(null)
     }
+
+    const  getTasksMe = async () => {
+        let response =await callLogin(values)
+
+    }
+
+    useEffect(() => {
+
+    }, []);
+
+
     return (
         <div>
             Task
