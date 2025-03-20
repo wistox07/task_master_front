@@ -5,9 +5,9 @@ import axios from "axios";
 
 
 export const taskService = {
-    getTasksMe: async (data: any): Promise<TaskMeResponse> => {
+    getTasksMe: async (): Promise<TaskMeResponse> => {
         try {
-          const response = await api.get<TaskMeResponse>(getTaskMe, data);
+          const response = await api.get<TaskMeResponse>(getTaskMe);
           return response.data
         } catch (error) {
           if (axios.isAxiosError(error)) {

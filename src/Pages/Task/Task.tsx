@@ -1,11 +1,21 @@
 import { useEffect } from "react";
 import { useLoginStore } from "../../Stores/LoginStore"
+import { taskService } from "../../Services/TaskService";
+import { useTaskStore } from "../../Stores/TaskStore";
+
+
+
 
 
 
 
 export default function Task () {
+    const {
+        getTasksMe: callGetTaskMe
+    } = taskService;
     const { isToken, setToken, setUser } = useLoginStore();
+    const { isTasks, setTasks } = useTaskStore();
+
 
     const logout = () => {
         setToken(null)
@@ -13,14 +23,17 @@ export default function Task () {
     }
 
     const  getTasksMe = async () => {
-        let response =await callLogin(values)
-
+        let response =await callGetTaskMe()
+        if(response.error){
+            console.log(response.message, response.message_detail)
+            return
+        }
+        setTasks(response.tasks)
     }
 
     useEffect(() => {
-
+        getTasksMe()
     }, []);
-
 
     return (
         <div>
@@ -30,7 +43,36 @@ export default function Task () {
                     CERRAR SESIÓN
                 </button>
             )}
+            {
+                isTasks.length > 0 ? (
+                    <table className='table'>
+                        <thead>
+                            <td>Title</td>
+                            <td>Description</td>
+                            <td>Expiration Date</td>
+                            <td>Status</td>
+                            <td>User</td>
+                            <td>Actions</td>
+                        </thead>
+                        <tbody>
+                        {
+                            isTasks.map((v,i) => (
+                                <tr key={i}>
+                                    <td>{v.title}</td>
+                                    <td>{v.description}</td>
+                                    <td>{v.expiration_date}</td>
+                                    <td>{v.status}</td>
+                                    <td>{v.user}</td>
+                                </tr>
+                            ))
+                        }
+                        </tbody>
+                    </table>
+                ) : (
+                    <p>No hay datos</p>
+                )
+
+            }
         </div>
     )
-
 } 

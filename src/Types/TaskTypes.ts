@@ -16,7 +16,7 @@ export interface Task  {
     id : number;
     title : string ;
     description : string ;
-    expiration_date : Date ;
+    expiration_date : string ;
     status : string ,
     user : string ,
 }
