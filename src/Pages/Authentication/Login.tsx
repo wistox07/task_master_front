@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
-import { FormGroup, Label, Form } from 'reactstrap'
+import { FormGroup, Label, Form, Container, Row, Card, CardBody, Col } from 'reactstrap'
+import { Bounce, toast, ToastContainer } from "react-toastify";
 import { ErrorMessage } from '@hookform/error-message'
 import { useLoginStore } from '../../Stores/LoginStore'
 import { LoginRequest } from '../../Types/LoginTypes';
@@ -40,9 +41,20 @@ export default function Login() {
 
   const onSubmit = async (values: LoginRequest) => {
     let response =await callLogin(values)
-    console.log(response);
+    
     if(response.error){
       console.log(response.message, response.message_detail)
+      toast.error('🦄 Wow so easy!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
       return 
     }
     setToken(response.token)
@@ -52,19 +64,25 @@ export default function Login() {
 
 
   return (
-    <>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup>
-        <Label htmlFor='email' className='form-label'>
-          email
-        </Label>
-        <input
+    <Container>
+      <Row>
+        <Col>
+        <Card>
+          <CardBody>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
+      <Label htmlFor="email" className="d-block text-start">Email</Label>
+      <input
           type='text'
           placeholder='email'
           autoComplete='off'
           className='form-control'
           {...register('email', {
-            required: { value: true, message: 'Campo obligatorio' }
+            required: { value: true, message: 'Campo obligatorio' },
+            pattern: {
+              value : /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message : 'El formato de correo es incorrecto'
+            }
           })}
         />
 
@@ -75,10 +93,8 @@ export default function Login() {
         />
       </FormGroup>
 
-      <FormGroup>
-        <Label className='form-label' htmlFor='password'>
-          Clave
-        </Label>
+      <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
+      <Label htmlFor="password" className="d-block text-start">Password</Label>
         <input
           placeholder='Clave'
           autoComplete='off'
@@ -99,13 +115,35 @@ export default function Login() {
         />
       </FormGroup>
 
-      <div className='d-grid gap-2 mt-4'>
         <button className='btn btn-primary' type='submit'>
-          INGRESAR
+          Ingresar
         </button>
-      </div>
+
     </Form>
-    </>
+          </CardBody>
+        </Card>
+        </Col>
+      </Row>
+    
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+        />
+    </Container>
+
+
+
+
+    
   )
 
 

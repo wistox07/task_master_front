@@ -4,6 +4,7 @@ import Login from './Pages/Authentication/Login'
 import Task from './Pages/Task/Task';
 import PrivateRoute from './Routes/PrivateRoute';
 import { useLoginStore } from './Stores/LoginStore';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
