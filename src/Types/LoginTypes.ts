@@ -33,7 +33,8 @@ export type LoginStoreTypes = {
     setUser: (value: User | null) => void;
     isToken : string | null;
     setToken :  (value: string | null) => void;
-
+    isLoading : boolean,
+    setLoading: (value: boolean) => void;
     //postLogin: (data: LoginRequest) => Promise<void>;
 }
 

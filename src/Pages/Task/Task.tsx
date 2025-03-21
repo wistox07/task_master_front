@@ -5,10 +5,6 @@ import { useTaskStore } from "../../Stores/TaskStore";
 
 
 
-
-
-
-
 export default function Task () {
     const {
         getTasksMe: callGetTaskMe
@@ -21,6 +17,16 @@ export default function Task () {
         setToken(null)
         setUser(null)
     }
+
+    const editTask = () => {
+        console.log("edit")
+    }
+
+    const deleteTask = () => {
+        console.log("delete")
+    }
+
+
 
     const  getTasksMe = async () => {
         let response =await callGetTaskMe()
@@ -47,12 +53,15 @@ export default function Task () {
                 isTasks.length > 0 ? (
                     <table className='table'>
                         <thead>
-                            <td>Title</td>
-                            <td>Description</td>
-                            <td>Expiration Date</td>
-                            <td>Status</td>
-                            <td>User</td>
-                            <td>Actions</td>
+                            <tr>
+                                <td>Title</td>
+                                <td>Description</td>
+                                <td>Expiration Date</td>
+                                <td>Status</td>
+                                <td>User</td>
+                                <td>Actions</td>
+                            </tr>
+
                         </thead>
                         <tbody>
                         {
@@ -63,6 +72,9 @@ export default function Task () {
                                     <td>{v.expiration_date}</td>
                                     <td>{v.status}</td>
                                     <td>{v.user}</td>
+                                    <button className="btn btn-danger" onClick={editTask}>Edit </button>
+                                    <button className="btn btn-danger" onClick={deleteTask}>Delete </button>
+
                                 </tr>
                             ))
                         }

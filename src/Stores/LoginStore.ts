@@ -10,6 +10,8 @@ export const useLoginStore = create<LoginStoreTypes>()(
         setUser : (value) => set(() => ({ isUser: value })),
         isToken : null ,
         setToken : (value) => set(() => ({ isToken: value })),
+        isLoading : false,
+        setLoading : (value) => set(() => ({ isLoading: value })),
       }),
       {
         name: "auth", // Nombre en localStorage

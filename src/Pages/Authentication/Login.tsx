@@ -1,10 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { FormGroup, Label, Form, Container, Row, Card, CardBody, Col } from 'reactstrap'
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { ErrorMessage } from '@hookform/error-message'
 import { useLoginStore } from '../../Stores/LoginStore'
 import { LoginRequest } from '../../Types/LoginTypes';
-import { useEffect } from 'react';
 import { loginService } from '../../Services/LoginService'
 import { useNavigate } from "react-router-dom";
 
@@ -20,10 +19,10 @@ export default function Login() {
 
 
   const {
-    isUser,
     setUser,
-    isToken,
-    setToken
+    setToken,
+    isLoading,
+    setLoading
   } = useLoginStore()
 
   const navigate = useNavigate();
@@ -31,32 +30,29 @@ export default function Login() {
     login : callLogin
   } = loginService
 
-  
-  useEffect(() => {
-    if (isToken){
-      //redireccionar a otra vista
-    }
-  }, [isToken]); // Se ejecutará cada vez que `isData` cambie
+   // Se ejecutará cada vez que `isData` cambie
   
 
   const onSubmit = async (values: LoginRequest) => {
+    setLoading(true);
     let response =await callLogin(values)
     
     if(response.error){
       console.log(response.message, response.message_detail)
-      toast.error('🦄 Wow so easy!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        });
-      return 
+      toast.error(response.message, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: 'light',
+        })
+        return 
     }
+    setLoading(false)
+
     setToken(response.token)
     setUser(response.user)
     navigate("/task");   
@@ -64,9 +60,9 @@ export default function Login() {
 
 
   return (
-    <Container>
-      <Row>
-        <Col>
+    <Container className='container vh-100 d-flex justify-content-center align-items-center'>
+      <Row className='w-100 justify-content-center'>
+        <Col xs={12} sm={8} md={6} lg={4}>
         <Card>
           <CardBody>
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -125,19 +121,6 @@ export default function Login() {
         </Col>
       </Row>
     
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Bounce}
-        />
     </Container>
 
 

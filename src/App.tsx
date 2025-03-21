@@ -1,17 +1,19 @@
-import './App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from './Pages/Authentication/Login'
 import Task from './Pages/Task/Task';
 import PrivateRoute from './Routes/PrivateRoute';
 import { useLoginStore } from './Stores/LoginStore';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 
 
 function App() {
 
   return (
-    <Router>
+    <>
+        <Router>
           <Routes>
               {/* Página de Login */}
               <Route path="/login" element={<Login />} />
@@ -25,6 +27,9 @@ function App() {
               <Route path="/" element={<NavigateToTaskIfLoggedIn />} />
           </Routes>
     </Router>
+    <ToastContainer></ToastContainer>
+    </>
+
   )
 }
 
