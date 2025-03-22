@@ -16,6 +16,12 @@ export const useLoginStore = create<LoginStoreTypes>()(
       {
         name: "auth", // Nombre en localStorage
         storage: createJSONStorage(() => localStorage), // Usa localStorage en lugar de sessionStorage
+        partialize: (state) => ({
+          isUser: state.isUser,
+          isToken: state.isToken,
+          // Excluimos isLoading y setLoading
+        }),
+  
       }
   )
 )

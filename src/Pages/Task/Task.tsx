@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useLoginStore } from "../../Stores/LoginStore"
 import { taskService } from "../../Services/TaskService";
 import { useTaskStore } from "../../Stores/TaskStore";
+import ContentLoaderTable from "../../Components/Common/SkeletonLoading/ContentLoaderTable";
+import { Card, CardBody } from "reactstrap";
 
 
 
@@ -10,7 +12,7 @@ export default function Task () {
         getTasksMe: callGetTaskMe
     } = taskService;
     const { isToken, setToken, setUser } = useLoginStore();
-    const { isTasks, setTasks } = useTaskStore();
+    const { isTasks, setTasks , isLoading , setLoading } = useTaskStore();
 
 
     const logout = () => {
@@ -29,11 +31,14 @@ export default function Task () {
 
 
     const  getTasksMe = async () => {
+        setLoading(true)
         let response =await callGetTaskMe()
+
         if(response.error){
             console.log(response.message, response.message_detail)
             return
         }
+        setLoading(false)
         setTasks(response.tasks)
     }
 
@@ -43,14 +48,16 @@ export default function Task () {
 
     return (
         <div>
-            Task
             {isToken && (
                     <button className="btn btn-danger" onClick={logout}>
                     CERRAR SESIÓN
                 </button>
             )}
-            {
-                isTasks.length > 0 ? (
+                <Card>
+                <CardBody>
+            {isLoading ? (
+                    <ContentLoaderTable/>
+                ) : isTasks.length > 0 ? (
                     <table className='table'>
                         <thead>
                             <tr>
@@ -72,8 +79,11 @@ export default function Task () {
                                     <td>{v.expiration_date}</td>
                                     <td>{v.status}</td>
                                     <td>{v.user}</td>
+                                    <td>
                                     <button className="btn btn-danger" onClick={editTask}>Edit </button>
                                     <button className="btn btn-danger" onClick={deleteTask}>Delete </button>
+                                    </td>
+                                    
 
                                 </tr>
                             ))
@@ -82,9 +92,9 @@ export default function Task () {
                     </table>
                 ) : (
                     <p>No hay datos</p>
-                )
-
-            }
+                )}
+                </CardBody>
+                </Card>
         </div>
     )
 } 

@@ -33,6 +33,8 @@ export type TaskMeResponse = TaskMeSuccessResponse | TaskMeErrorResponse;
 export type TaskStoreTypes = {
     isTasks : Task[] | [] ;
     setTasks: (value: Task[]  | []) => void;
+    isLoading : boolean;
+    setLoading :  (value : boolean) => void;
 }
 
 

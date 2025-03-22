@@ -1,11 +1,12 @@
 import { useForm } from 'react-hook-form'
-import { FormGroup, Label, Form, Container, Row, Card, CardBody, Col } from 'reactstrap'
+import { FormGroup, Label, Form, Container, Row, Card, CardBody, Col, Spinner } from 'reactstrap'
 import { toast } from "react-toastify";
 import { ErrorMessage } from '@hookform/error-message'
 import { useLoginStore } from '../../Stores/LoginStore'
 import { LoginRequest } from '../../Types/LoginTypes';
 import { loginService } from '../../Services/LoginService'
 import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 
 
 export default function Login() {
@@ -21,6 +22,7 @@ export default function Login() {
   const {
     setUser,
     setToken,
+    isToken,
     isLoading,
     setLoading
   } = useLoginStore()
@@ -30,13 +32,18 @@ export default function Login() {
     login : callLogin
   } = loginService
 
-   // Se ejecutará cada vez que `isData` cambie
-  
+   //Se ejecuta cuando inicie el componente
+   useEffect(() => {
+    if (isToken) {
+      navigate("/task");   
+    }
+  }, []);
 
   const onSubmit = async (values: LoginRequest) => {
     setLoading(true);
     let response =await callLogin(values)
-    
+    setLoading(false)
+
     if(response.error){
       console.log(response.message, response.message_detail)
       toast.error(response.message, {
@@ -51,7 +58,7 @@ export default function Login() {
         })
         return 
     }
-    setLoading(false)
+    
 
     setToken(response.token)
     setUser(response.user)
@@ -67,12 +74,12 @@ export default function Login() {
           <CardBody>
           <Form onSubmit={handleSubmit(onSubmit)}>
       <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
-      <Label htmlFor="email" className="d-block text-start">Email</Label>
+      <Label htmlFor="email" className="d-block text-start">Correo</Label>
       <input
           type='text'
           placeholder='email'
           autoComplete='off'
-          className='form-control'
+          className= {`form-control ${errors.email ? 'is-invalid' : ''}`}
           {...register('email', {
             required: { value: true, message: 'Campo obligatorio' },
             pattern: {
@@ -90,12 +97,14 @@ export default function Login() {
       </FormGroup>
 
       <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
-      <Label htmlFor="password" className="d-block text-start">Password</Label>
+      <Label htmlFor="password" className="d-block text-start">Contraseña</Label>
         <input
           placeholder='Clave'
           autoComplete='off'
           type={'password'}
-          className={'form-control'}
+          className={`form-control pe-5 password-input ${
+            errors.password ? 'is-invalid' : ''
+          }`}
           {...register('password', {
             required: {
               value: true,
@@ -111,9 +120,12 @@ export default function Login() {
         />
       </FormGroup>
 
-        <button className='btn btn-primary' type='submit'>
-          Ingresar
+        <button className='btn btn-primary' type='submit' disabled={isLoading}>
+          { isLoading && (
+            <Spinner size='sm' color='light' padding='2' />
+          )} Ingresar
         </button>
+        
 
     </Form>
           </CardBody>
