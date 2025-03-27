@@ -12,25 +12,28 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PublicRoute from "./Routes/PublicRoute";
 import { useLoginStore } from "./Stores/LoginStore";
+import { AuthProvider } from "./AuthContext/AuthContext";
 
 function App() {
   return (
     <>
       <Router>
-        <Routes>
-          {/* Página de Login */}
-          <Route element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
-          </Route>
+        <AuthProvider>
+          <Routes>
+            {/* Página de Login */}
+            <Route element={<PublicRoute />}>
+              <Route path="/login" element={<Login />} />
+            </Route>
 
-          {/* Rutas protegidas, solo accesibles si el usuario está autenticado */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/task" element={<Task />} />
-          </Route>
+            {/* Rutas protegidas, solo accesibles si el usuario está autenticado */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/task" element={<Task />} />
+            </Route>
 
-          {/* Página principal: decide si va a login o a task */}
-          <Route path="/" element={<NavigateToTaskIfLoggedIn />} />
-        </Routes>
+            {/* Página principal: decide si va a login o a task */}
+            <Route path="/" element={<NavigateToTaskIfLoggedIn />} />
+          </Routes>
+        </AuthProvider>
       </Router>
       <ToastContainer></ToastContainer>
     </>
