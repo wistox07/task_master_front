@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import Login from "./Pages/Authentication/Login";
 import Task from "./Pages/Task/Task";
@@ -12,31 +13,41 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PublicRoute from "./Routes/PublicRoute";
 import { useLoginStore } from "./Stores/LoginStore";
-import { AuthProvider } from "./AuthContext/AuthContext";
+import { useEffect } from "react";
+import { setGlobalNavigate } from "./Services/NavigationService";
 
 function App() {
   return (
-    <>
-      <Router>
-        <AuthProvider>
-          <Routes>
-            {/* Página de Login */}
-            <Route element={<PublicRoute />}>
-              <Route path="/login" element={<Login />} />
-            </Route>
+    <Router>
+      <AppRoutes />
+      <ToastContainer />
+    </Router>
+  );
+}
 
-            {/* Rutas protegidas, solo accesibles si el usuario está autenticado */}
-            <Route element={<PrivateRoute />}>
-              <Route path="/task" element={<Task />} />
-            </Route>
+// Mover `useNavigate()` a un componente dentro de `<Router>`
+function AppRoutes() {
+  const navigate = useNavigate();
 
-            {/* Página principal: decide si va a login o a task */}
-            <Route path="/" element={<NavigateToTaskIfLoggedIn />} />
-          </Routes>
-        </AuthProvider>
-      </Router>
-      <ToastContainer></ToastContainer>
-    </>
+  useEffect(() => {
+    setGlobalNavigate(navigate);
+  }, [navigate]);
+
+  return (
+    <Routes>
+      {/* Página de Login */}
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<Login />} />
+      </Route>
+
+      {/* Rutas protegidas */}
+      <Route element={<PrivateRoute />}>
+        <Route path="/task" element={<Task />} />
+      </Route>
+
+      {/* Página principal */}
+      <Route path="/" element={<NavigateToTaskIfLoggedIn />} />
+    </Routes>
   );
 }
 
