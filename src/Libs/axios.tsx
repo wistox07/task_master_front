@@ -28,6 +28,7 @@ api.interceptors.response.use(
 
       const navigate = getGlobalNavigate();
       if (navigate) {
+        console.log("redirigendo a login");
         navigate("/login");
       }
     }

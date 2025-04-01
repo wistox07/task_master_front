@@ -12,9 +12,10 @@ import {
 } from "reactstrap";
 import { useTaskStore } from "../../Stores/TaskStore";
 import { taskService } from "../../Services/TaskService";
+import { useEffect } from "react";
 
 export default function TaskSearch() {
-  const { setLoading, setTasks } = useTaskStore();
+  const { setLoading, setTasks, isLoading } = useTaskStore();
   const { getTasksMe: callGetTaskMe } = taskService;
   const {
     register,
@@ -23,16 +24,22 @@ export default function TaskSearch() {
   } = useForm();
 
   const searchTask = async () => {
-    setLoading(true);
-    let response = await callGetTaskMe();
-
-    if (response.error) {
-      console.log(response.message, response.message_detail);
-      return;
+    try {
+      setLoading(true);
+      let response = await callGetTaskMe();
+      if (response.error) {
+        console.log(response.message, response.message_detail);
+        return;
+      }
+      setTasks(response.tasks);
+    } catch (error) {
+      console.log(error);
     }
-    setLoading(false);
-    setTasks(response.tasks);
   };
+
+  useEffect(() => {
+    console.log(isLoading);
+  }, []);
 
   return (
     <Row className="w-100 justify-content-center">
