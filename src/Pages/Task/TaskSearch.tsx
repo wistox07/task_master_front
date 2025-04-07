@@ -13,10 +13,13 @@ import {
 import { useTaskStore } from "../../Stores/TaskStore";
 import { taskService } from "../../Services/TaskService";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function TaskSearch() {
   const { setLoading, setTasks, isLoading } = useTaskStore();
   const { getTasksMe: callGetTaskMe } = taskService;
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -24,17 +27,20 @@ export default function TaskSearch() {
   } = useForm();
 
   const searchTask = async () => {
-    try {
-      setLoading(true);
-      let response = await callGetTaskMe();
-      if (response.error) {
-        console.log(response.message, response.message_detail);
-        return;
+    setLoading(true);
+    let response = await callGetTaskMe();
+
+    if (response.error) {
+      setLoading(false);
+      console.log(response);
+      if (response.code == 401) {
+        navigate("/login");
+        console.log("ingresa a navigate");
       }
-      setTasks(response.tasks);
-    } catch (error) {
-      console.log(error);
+      return;
     }
+    setTasks(response.tasks);
+    setLoading(false);
   };
 
   useEffect(() => {

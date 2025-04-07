@@ -16,7 +16,7 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
+/*
 api.interceptors.response.use(
   (response) => response, // Si la respuesta es exitosa, la devuelve tal cual
   (error) => {
@@ -35,5 +35,6 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+*/
 
 export default api;

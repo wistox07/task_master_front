@@ -24,6 +24,7 @@ export interface Task {
 }
 
 export interface TaskMeErrorResponse {
+  code: number;
   error: true;
   message: string;
   message_detail: string | string[];

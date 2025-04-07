@@ -10,26 +10,28 @@ export const taskService = {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        throw new Error("Sesión expirada");
-
-        /*
-            return error.response?.data || {
-              error: true,
-              message: "Error en la solicitud",
-              message_detail: error.message || "No se pudo completar la solicitud",
-            };
-            */
-      }
-
-      throw new Error("Sesión expirada");
-
-      /*
+        if (error.response?.data) {
+          const status = error.response.status;
+          const data = error.response.data;
           return {
+            code: status,
+            ...data,
+          };
+        } else {
+          return {
+            code: 1,
             error: true,
-            message: "Error desconocido",
+            message: "Error en la solicitud",
             message_detail: "No se pudo completar la solicitud",
           };
-          */
+        }
+      }
+      return {
+        code: 0,
+        error: true,
+        message: "Error desconocido",
+        message_detail: "Se produjo un error desconocido",
+      };
     }
   },
 };
