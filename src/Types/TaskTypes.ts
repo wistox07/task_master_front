@@ -1,3 +1,5 @@
+import { ApiErrorResponse } from "./ShareTypes";
+
 export interface TaskSaveRequest {
   title: string;
   description: string;
@@ -23,14 +25,15 @@ export interface Task {
   user: string;
 }
 
+/*
 export interface TaskMeErrorResponse {
   code: number;
   error: true;
   message: string;
   message_detail: string | string[];
 }
-
-export type TaskMeResponse = TaskMeSuccessResponse | TaskMeErrorResponse;
+*/
+export type TaskMeResponse = TaskMeSuccessResponse | ApiErrorResponse;
 
 export type TaskStoreTypes = {
   isTasks: Task[] | [];
