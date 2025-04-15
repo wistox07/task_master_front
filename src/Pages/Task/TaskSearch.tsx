@@ -9,20 +9,24 @@ import {
   FormGroup,
   Label,
   Row,
+  Spinner,
 } from "reactstrap";
 import { useTaskStore } from "../../Stores/TaskStore";
 import { taskService } from "../../Services/TaskService";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useErrorProcessHandler } from "../../Utils/ErrorProcessHandler";
+import useDateRange from "../../Utils/useDateRange";
 
 export default function TaskSearch() {
-  const { setLoading, setTasks, isLoading } = useTaskStore();
+  const { setLoading, setTasks , isLoading} = useTaskStore();
+  const { isDesde, isHasta } =useDateRange();
   const { getTasksMe: callGetTaskMe } = taskService;
-  const navigate = useNavigate();
+  const handleError = useErrorProcessHandler();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -32,22 +36,22 @@ export default function TaskSearch() {
 
     if (response.error) {
       setLoading(false);
-      console.log(response);
-      if (response.code == 401) {
-        navigate("/login");
-        console.log("ingresa a navigate");
-      }
-      return;
+      setTasks([]);
+      handleError(response)
+      return
     }
     setTasks(response.tasks);
     setLoading(false);
   };
 
   useEffect(() => {
-    console.log(isLoading);
-  }, []);
+    setValue('init_date', isDesde)
+    setValue('end_date', isHasta)
+
+  },[])
 
   return (
+
     <Row className="w-100 justify-content-center">
       <Col xs={12} sm={8} md={6} lg={4}>
         <Form onSubmit={handleSubmit(searchTask)}>
@@ -141,7 +145,9 @@ export default function TaskSearch() {
                   </UncontrolledDropdown>
                 )*/}
 
-              <button className="btn btn-primary" type="submit">
+              <button className="btn btn-primary" type="submit" disabled=
+              {isLoading}>
+                {isLoading && <Spinner size="sm" color="light" className="me-2"/>}
                 Buscar
               </button>
             </CardFooter>

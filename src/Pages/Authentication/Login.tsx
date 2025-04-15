@@ -130,8 +130,8 @@ export default function Login() {
                   type="submit"
                   disabled={isLoading}
                 >
-                  {isLoading && <Spinner size="sm" color="light" padding="2" />}{" "}
-                  Ingresar
+                {isLoading && <Spinner size="sm" color="light" className="me-2"/>}
+                Ingresar
                 </button>
               </Form>
             </CardBody>
