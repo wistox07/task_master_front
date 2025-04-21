@@ -32,7 +32,10 @@ export default function TaskSearch() {
 
   const searchTask = async () => {
     setLoading(true);
-    let response = await callGetTaskMe();
+    let response = await callGetTaskMe({
+      page : 1,
+      per_page : 10
+    });
 
     if (response.error) {
       setLoading(false);

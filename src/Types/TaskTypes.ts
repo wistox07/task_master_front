@@ -7,7 +7,10 @@ export interface TaskSaveRequest {
   status_id: number;
 }
 
-export interface TaskMeRequest {}
+export interface TaskMeRequest {
+  page : number;
+  per_page : number;
+}
 
 export interface TaskMeSuccessResponse {
   error: false;

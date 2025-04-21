@@ -1,7 +1,9 @@
 import api from "../Libs/axios";
 import { getTaskMe } from "../Api/ApiUrl";
-import { TaskMeResponse , TaskMeRequest } from "../Types/TaskTypes";
+import { StatusResponse } from "../Types/StatusTypes";
 import { handleAxiosError } from "../Utils/errorHandler";
+
+
 
 export const taskService = {
   getTasksMe: async (params : TaskMeRequest): Promise<TaskMeResponse> => {
